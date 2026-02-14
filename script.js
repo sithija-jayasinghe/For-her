@@ -647,14 +647,117 @@ function setupStarfield() {
   resize();
 }
 
+function setupClickEffects() {
+  const hearts = ["💖", "✨", "🌸", "🦋", "🌷"];
+  
+  document.addEventListener("click", (e) => {
+    // Don't spawn hearts if clicking a button or link (optional, 
+    // but nice to avoid clutter on interactive elements)
+    if (e.target.closest('button') || e.target.closest('a')) return;
+
+    const heart = document.createElement("span");
+    heart.classList.add("click-heart");
+    
+    // Randomly pick an emoji
+    heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+    
+    // Position it at the click coordinates
+    // Subtracting a bit to center the emoji on the cursor
+    heart.style.left = `${e.clientX}px`;
+    heart.style.top = `${e.clientY}px`;
+    
+    // Random slight rotation for variety
+    const rotation = Math.random() * 40 - 20; // -20deg to +20deg
+    heart.style.setProperty('--rotation', `${rotation}deg`);
+
+    document.body.appendChild(heart);
+
+    // Remove after animation
+    setTimeout(() => {
+      heart.remove();
+    }, 1000);
+  });
+}
+
+
+function setupTimer() {
+  const startDate = new Date("2020-03-21T00:00:00");
+  const timerGrid = document.getElementById("timerGrid");
+  
+  if (!timerGrid) return;
+  
+  const timeUnits = [
+    { label: "Years", value: 0 },
+    { label: "Months", value: 0 },
+    { label: "Days", value: 0 },
+    { label: "Hours", value: 0 },
+    { label: "Minutes", value: 0 },
+    { label: "Seconds", value: 0 },
+  ];
+  
+  // Initial render
+  timerGrid.innerHTML = timeUnits.map(unit => `
+    <div class="timer-item">
+      <span class="timer-value" id="timer-${unit.label}">${unit.value}</span>
+      <span class="timer-label">${unit.label}</span>
+    </div>
+  `).join('');
+  
+  const updateTimer = () => {
+    const now = new Date();
+    
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+    let hours = now.getHours() - startDate.getHours();
+    let minutes = now.getMinutes() - startDate.getMinutes();
+    let seconds = now.getSeconds() - startDate.getSeconds();
+
+    if (seconds < 0) {
+      seconds += 60;
+      minutes--;
+    }
+    if (minutes < 0) {
+      minutes += 60;
+      hours--;
+    }
+    if (hours < 0) {
+      hours += 24;
+      days--;
+    }
+    if (days < 0) {
+      // Get days in the previous month
+      const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      days += previousMonth.getDate();
+      months--;
+    }
+    if (months < 0) {
+      months += 12;
+      years--;
+    }
+    
+    document.getElementById("timer-Years").innerText = years;
+    document.getElementById("timer-Months").innerText = months;
+    document.getElementById("timer-Days").innerText = days;
+    document.getElementById("timer-Hours").innerText = hours.toString().padStart(2, '0');
+    document.getElementById("timer-Minutes").innerText = minutes.toString().padStart(2, '0');
+    document.getElementById("timer-Seconds").innerText = seconds.toString().padStart(2, '0');
+  };
+  
+  setInterval(updateTimer, 1000);
+  updateTimer();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupLoadingScreen();
   renderUniverseCards();
   setupUniverseStory();
+  setupTimer(); // Added timer setup
   renderReasons();
   setupReasonsSection();
   setupSmoothScroll();
   setupFinalSection();
   setupPetals();
   setupStarfield();
+  setupClickEffects();
 });

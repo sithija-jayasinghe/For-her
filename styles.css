@@ -901,3 +901,86 @@ body.modal-open {
     animation: none;
   }
 }
+
+/* --- Hero Timer Integration --- */
+.timer-container-hero {
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+}
+
+.timer-tagline {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--rose-mist);
+  margin-bottom: var(--space-3);
+  font-style: italic;
+}
+
+.hero-timer-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* All in one row if checking desktop */
+  gap: var(--space-2);
+  margin: 0;
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+  .hero-timer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+  }
+}
+
+.hero-timer-grid .timer-item {
+  padding: var(--space-1);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.hero-timer-grid .timer-value {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rose-mist);
+  line-height: 1;
+}
+
+.hero-timer-grid .timer-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--lavender-mist);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.2rem;
+  opacity: 0.7;
+}
+
+/* Remove old timer section styles if needed, or override */
+.click-heart {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  font-size: 1.5rem;
+  /* Start centered on click, rotate slightly */
+  transform: translate(-50%, -50%);
+  animation: floatUpFade 1s ease-out forwards;
+}
+
+@keyframes floatUpFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5) rotate(var(--rotation, 0deg));
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -80%) scale(1.2) rotate(var(--rotation, 0deg));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -200%) scale(1) rotate(var(--rotation, 0deg));
+  }
+}
