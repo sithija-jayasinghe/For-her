@@ -1,8 +1,7 @@
 ﻿// =============================================================
 // Edit points for later phases:
 // 1) Her display name + nickname text are in index.html (hero section).
-// 2) Song filename is in index.html: <audio id="bgAudio" src="song.mp3">.
-// 3) Universe messages and reasons are editable in the arrays below.
+// 2) Universe messages and reasons are editable in the arrays below.
 // =============================================================
 
 const universeMessages = [
@@ -386,49 +385,117 @@ function setupSmoothScroll() {
   });
 }
 
-function setupAudioToggle() {
-  const audio = document.getElementById("bgAudio");
-  const toggleButton = document.getElementById("audioToggle");
-  const status = document.getElementById("audioStatus");
+function setupFinalSection() {
+  const yesBtn = document.getElementById("yesBtn");
+  const hugBtn = document.getElementById("hugBtn");
+  const hugTooltip = document.getElementById("hugTooltip");
+  const modalBackdrop = document.getElementById("valentineModal");
+  const dialog = document.getElementById("valentineDialog");
+  const closeBtn = document.getElementById("modalClose");
 
-  if (!audio || !toggleButton || !status) return;
-
-  const setStatus = (message) => {
-    status.textContent = message;
-  };
-
-  const markUnavailable = () => {
-    toggleButton.disabled = true;
-    toggleButton.textContent = "Song Unavailable";
-    toggleButton.setAttribute("aria-label", "Background song unavailable");
-    setStatus("song.mp3 not found. Add it beside index.html to enable music.");
-  };
-
-  if (!audio.getAttribute("src")) {
-    markUnavailable();
+  if (!yesBtn || !hugBtn || !modalBackdrop || !dialog || !closeBtn || !hugTooltip) {
     return;
   }
 
-  toggleButton.addEventListener("click", async () => {
-    if (audio.paused) {
-      try {
-        await audio.play();
-        toggleButton.textContent = "Pause Our Soft Song 🎧";
-        toggleButton.setAttribute("aria-label", "Pause our soft song");
-        setStatus("Playing softly.");
-      } catch (error) {
-        setStatus("Unable to play audio right now. Tap again after adding song.mp3.");
-      }
-    } else {
-      audio.pause();
-      toggleButton.textContent = "Play Our Soft Song 🎧";
-      toggleButton.setAttribute("aria-label", "Play our soft song");
-      setStatus("Paused.");
+  const coarsePointerQuery = window.matchMedia("(hover: none), (pointer: coarse)");
+  let lastFocusedElement = null;
+  let tooltipTimer = null;
+
+  const setHugOffset = () => {
+    if (reduceMotionQuery.matches) return;
+
+    const limitX = coarsePointerQuery.matches ? 14 : 22;
+    const limitY = coarsePointerQuery.matches ? 8 : 14;
+    const nextX = Math.round((Math.random() * 2 - 1) * limitX);
+    const nextY = Math.round((Math.random() * 2 - 1) * limitY);
+    hugBtn.style.transform = `translate(${nextX}px, ${nextY}px)`;
+  };
+
+  const showHugTooltip = () => {
+    hugTooltip.classList.add("is-visible");
+    window.clearTimeout(tooltipTimer);
+    tooltipTimer = window.setTimeout(() => {
+      hugTooltip.classList.remove("is-visible");
+    }, 1200);
+  };
+
+  const getFocusable = () =>
+    Array.from(
+      dialog.querySelectorAll(
+        "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
+      )
+    ).filter((element) => !element.hasAttribute("disabled"));
+
+  const closeModal = () => {
+    if (modalBackdrop.hidden) return;
+    modalBackdrop.hidden = true;
+    document.body.classList.remove("modal-open");
+    document.removeEventListener("keydown", handleDialogKeydown);
+    if (lastFocusedElement instanceof HTMLElement) {
+      lastFocusedElement.focus();
+    }
+  };
+
+  const openModal = () => {
+    lastFocusedElement = document.activeElement;
+    modalBackdrop.hidden = false;
+    document.body.classList.add("modal-open");
+    closeBtn.focus();
+    document.addEventListener("keydown", handleDialogKeydown);
+  };
+
+  const handleDialogKeydown = (event) => {
+    if (modalBackdrop.hidden) return;
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeModal();
+      return;
+    }
+
+    if (event.key !== "Tab") return;
+
+    const focusable = getFocusable();
+    if (!focusable.length) {
+      event.preventDefault();
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+
+    if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  yesBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", closeModal);
+
+  modalBackdrop.addEventListener("click", (event) => {
+    if (event.target === modalBackdrop) {
+      closeModal();
     }
   });
 
-  audio.addEventListener("error", () => {
-    markUnavailable();
+  hugBtn.addEventListener("mouseenter", () => {
+    if (coarsePointerQuery.matches) return;
+    setHugOffset();
+  });
+
+  hugBtn.addEventListener("click", (event) => {
+    if (!coarsePointerQuery.matches) return;
+    event.preventDefault();
+    setHugOffset();
+    showHugTooltip();
   });
 }
 
@@ -436,7 +503,8 @@ function setupPetals() {
   const petalField = document.getElementById("petalField");
   if (!petalField || reduceMotionQuery.matches) return;
 
-  const totalPetals = 14;
+  const coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  const totalPetals = coarsePointer ? 9 : 14;
 
   for (let i = 0; i < totalPetals; i += 1) {
     const petal = document.createElement("span");
@@ -466,6 +534,7 @@ function setupStarfield() {
   if (!context) return;
 
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
   let width = 0;
   let height = 0;
   let stars = [];
@@ -482,7 +551,10 @@ function setupStarfield() {
   });
 
   const buildStars = () => {
-    const starCount = Math.max(80, Math.min(220, Math.floor((width * height) / 9000)));
+    const densityDivisor = coarsePointer ? 12500 : 9800;
+    const maxStars = coarsePointer ? 150 : 200;
+    const minStars = coarsePointer ? 60 : 80;
+    const starCount = Math.max(minStars, Math.min(maxStars, Math.floor((width * height) / densityDivisor)));
     stars = Array.from({ length: starCount }, makeStar);
   };
 
@@ -558,7 +630,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderReasons();
   setupReasonsSection();
   setupSmoothScroll();
-  setupAudioToggle();
+  setupFinalSection();
   setupPetals();
   setupStarfield();
 });

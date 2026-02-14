@@ -43,6 +43,7 @@
           <h1>In Every Universe, I’d Still Choose You</h1>
           <!-- Edit her name and nickname here -->
           <p class="subtitle">For Upeksha — my baby doll 🌸</p>
+          <p class="mood-line">You’re my favorite playlist 🎶</p>
           <div class="hero-actions">
             <a
               class="soft-btn link-btn"
@@ -51,18 +52,7 @@
             >
               Enter the Universe
             </a>
-            <button
-              id="audioToggle"
-              class="soft-btn"
-              type="button"
-              aria-label="Play our soft song"
-            >
-              Play Our Soft Song 🎧
-            </button>
           </div>
-          <p id="audioStatus" class="audio-status" aria-live="polite"></p>
-          <!-- Edit song filename here if needed (song.mp3) -->
-          <audio id="bgAudio" src="song.mp3" loop preload="none"></audio>
         </div>
       </section>
 
@@ -107,16 +97,59 @@
       </section>
 
       <section id="final" class="section final" aria-label="Final message section">
-        <div class="content-card final-card">
-          <h2>Always You</h2>
-          <p>
-            Thank you for being my soft place to land. No matter how the stars move,
-            I still move toward you.
-          </p>
-          <a class="soft-btn link-btn" href="#home" aria-label="Back to top">Back to top</a>
+        <div class="content-card final-ask">
+          <h2>So in this universe… will you be my Valentine?</h2>
+          <div class="final-actions" id="finalActions">
+            <button id="yesBtn" class="soft-btn final-btn yes-btn" type="button" aria-label="Say yes">
+              Yes 💖
+            </button>
+            <button
+              id="hugBtn"
+              class="soft-btn final-btn hug-btn"
+              type="button"
+              aria-label="I need a hug first"
+            >
+              I need a hug first 🥺
+            </button>
+            <span id="hugTooltip" class="hug-tooltip" role="status" aria-live="polite">come here 😄</span>
+          </div>
+          <a class="replay-link" href="#home" aria-label="Replay from top">Replay</a>
         </div>
       </section>
     </main>
+
+    <footer class="site-footer">Made with love by Sithija</footer>
+
+    <div id="valentineModal" class="modal-backdrop" hidden>
+      <div
+        id="valentineDialog"
+        class="valentine-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalMessage"
+        tabindex="-1"
+      >
+        <button
+          id="modalClose"
+          class="modal-close"
+          type="button"
+          aria-label="Close Valentine message dialog"
+        >
+          Close
+        </button>
+        <span class="modal-heart" aria-hidden="true">💖</span>
+        <h3 id="modalTitle">For You</h3>
+        <p id="modalMessage" class="modal-message">
+          Upeksha… my baby doll 🌸<br />
+          Thank you for being the calm in my life.<br />
+          I promise to love you gently,<br />
+          protect your softness,<br />
+          and stand beside you in every season.<br />
+          Happy Valentine’s Day 💖
+        </p>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>

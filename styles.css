@@ -215,9 +215,16 @@ h1 {
 
 .subtitle {
   font-size: clamp(1rem, 2.5vw, 1.25rem);
-  color: #fff5fb;
+  color: #fff6ff;
   max-width: 40ch;
   margin: 0 auto;
+}
+
+.mood-line {
+  margin-top: 0.65rem;
+  font-size: 0.9rem;
+  color: #f8e7ff;
+  letter-spacing: 0.01em;
 }
 
 .hero-actions {
@@ -254,13 +261,6 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.audio-status {
-  margin-top: var(--space-2);
-  min-height: 1.1rem;
-  color: #f8ebff;
-  font-size: 0.86rem;
 }
 
 .section-head {
@@ -493,12 +493,12 @@ h1 {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   padding: 0.9rem 0.75rem;
-  box-shadow: 0 8px 20px rgba(24, 11, 45, 0.16);
+  box-shadow: 0 8px 20px rgba(24, 11, 45, 0.22);
 }
 
 .reason-front {
-  background: linear-gradient(165deg, rgba(255, 236, 248, 0.3), rgba(223, 201, 255, 0.24));
-  color: #fffaff;
+  background: linear-gradient(165deg, rgba(74, 44, 109, 0.9), rgba(56, 32, 88, 0.84));
+  color: #fff7ff;
   font-weight: 600;
   letter-spacing: 0.04em;
   font-size: clamp(0.92rem, 1.6vw, 1.04rem);
@@ -506,8 +506,8 @@ h1 {
 
 .reason-back {
   transform: rotateY(180deg);
-  background: linear-gradient(150deg, rgba(255, 245, 252, 0.25), rgba(221, 198, 255, 0.22));
-  color: #fff8ff;
+  background: linear-gradient(150deg, rgba(95, 61, 132, 0.88), rgba(72, 45, 109, 0.86));
+  color: #fff6ff;
   font-size: clamp(0.84rem, 1.45vw, 0.96rem);
   line-height: 1.4;
 }
@@ -569,17 +569,149 @@ h1 {
   align-items: center;
 }
 
-.final-card {
+.final-ask {
   text-align: center;
+  width: min(100%, 760px);
 }
 
-.final-card h2 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: var(--space-2);
+.final-ask h2 {
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  margin-bottom: var(--space-4);
+  text-wrap: balance;
 }
 
-.final-card p {
-  color: #fff4fb;
+.final-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.final-btn {
+  min-width: 155px;
+}
+
+.yes-btn {
+  background: linear-gradient(180deg, rgba(255, 211, 234, 0.48), rgba(228, 178, 230, 0.32));
+}
+
+.hug-btn {
+  transition: transform 260ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.hug-tooltip {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(35, 18, 57, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.76rem;
+  color: #fff3ff;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.hug-tooltip.is-visible {
+  opacity: 1;
+}
+
+.replay-link {
+  display: inline-block;
+  margin-top: var(--space-4);
+  color: #ffeafb;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 230, 248, 0.7);
+  text-underline-offset: 4px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: var(--space-3);
+  background: rgba(17, 9, 31, 0.62);
+  backdrop-filter: blur(8px);
+}
+
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.valentine-modal {
+  position: relative;
+  width: min(100%, 560px);
+  background: linear-gradient(160deg, rgba(57, 36, 89, 0.95), rgba(81, 49, 110, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 20px;
+  padding: 1.2rem 1.1rem 1.4rem;
+  box-shadow: 0 20px 46px rgba(10, 5, 20, 0.48);
+  color: #fff6ff;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.modal-heart {
+  display: inline-block;
+  font-size: 1.55rem;
+  animation: pulseHeart 2s ease-in-out infinite;
+}
+
+.valentine-modal h3 {
+  margin-top: 0.45rem;
+  margin-bottom: 0.3rem;
+  font-size: 1.5rem;
+}
+
+.modal-message {
+  margin-top: 0.6rem;
+  color: #fff3ff;
+  line-height: 1.58;
+  font-size: 1rem;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.site-footer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0.85rem 1rem 1.6rem;
+  color: rgba(255, 238, 251, 0.8);
+  font-size: 0.86rem;
+}
+
+@keyframes pulseHeart {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
 
 @keyframes floatNebula {
@@ -672,5 +804,17 @@ h1 {
 
   .reasons-celebration {
     display: none;
+  }
+
+  .hug-btn {
+    transition: none;
+  }
+
+  .hug-tooltip {
+    transition: none;
+  }
+
+  .modal-heart {
+    animation: none;
   }
 }
