@@ -20,6 +20,18 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div id="loadingScreen" class="loading-screen" role="status" aria-live="polite">
+      <div class="loading-card">
+        <p class="loading-title">You are the best of the best</p>
+        <p class="loading-subtitle">Preparing your little universe...</p>
+        <div class="loading-dots" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+
     <div class="sky-bg" aria-hidden="true">
       <canvas id="starfieldCanvas" class="starfield-canvas"></canvas>
       <div class="nebula-layer nebula-one"></div>

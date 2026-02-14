@@ -86,6 +86,29 @@ const reasons50 = [
 const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const revealedReasonIndexes = new Set();
 let hasCelebratedReasons = false;
+const appBootTime = Date.now();
+
+function setupLoadingScreen() {
+  const loadingScreen = document.getElementById("loadingScreen");
+  if (!loadingScreen) return;
+
+  const hideLoading = () => {
+    const minVisibleMs = reduceMotionQuery.matches ? 300 : 900;
+    const elapsed = Date.now() - appBootTime;
+    const delay = Math.max(0, minVisibleMs - elapsed);
+
+    window.setTimeout(() => {
+      loadingScreen.classList.add("is-hidden");
+    }, delay);
+  };
+
+  if (document.readyState === "complete") {
+    hideLoading();
+    return;
+  }
+
+  window.addEventListener("load", hideLoading, { once: true });
+}
 
 function renderUniverseCards() {
   const universeStory = document.getElementById("universeStory");
@@ -625,6 +648,7 @@ function setupStarfield() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupLoadingScreen();
   renderUniverseCards();
   setupUniverseStory();
   renderReasons();
