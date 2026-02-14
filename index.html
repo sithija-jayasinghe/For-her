@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For Upeksha | Valentine</title>
+    <meta
+      name="description"
+      content="A soft, romantic Valentine page for Upeksha, baby doll."
+    />
+
+    <!-- Fonts: elegant serif for headings + clean sans for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="sky-bg" aria-hidden="true">
+      <canvas id="starfieldCanvas" class="starfield-canvas"></canvas>
+      <div class="nebula-layer nebula-one"></div>
+      <div class="nebula-layer nebula-two"></div>
+      <div id="petalField" class="petal-field"></div>
+    </div>
+
+    <header class="site-header">
+      <nav class="quick-nav" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#universes">Universes</a>
+        <a href="#reasons">Reasons</a>
+        <a href="#final">Final</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="section hero" aria-label="Home section">
+        <div class="hero-cinematic content-card hero-card">
+          <p class="eyebrow">A Love Letter In Starlight</p>
+          <h1>In Every Universe, I’d Still Choose You</h1>
+          <!-- Edit her name and nickname here -->
+          <p class="subtitle">For Upeksha — my baby doll 🌸</p>
+          <div class="hero-actions">
+            <a
+              class="soft-btn link-btn"
+              href="#universes"
+              aria-label="Enter the universe and view universes section"
+            >
+              Enter the Universe
+            </a>
+            <button
+              id="audioToggle"
+              class="soft-btn"
+              type="button"
+              aria-label="Play our soft song"
+            >
+              Play Our Soft Song 🎧
+            </button>
+          </div>
+          <p id="audioStatus" class="audio-status" aria-live="polite"></p>
+          <!-- Edit song filename here if needed (song.mp3) -->
+          <audio id="bgAudio" src="song.mp3" loop preload="none"></audio>
+        </div>
+      </section>
+
+      <section id="universes" class="section" aria-label="Universes section">
+        <div class="section-head">
+          <h2>In Every Universe</h2>
+          <p>Little worlds where we still find each other.</p>
+        </div>
+        <div id="universeGrid" class="card-grid"></div>
+      </section>
+
+      <section id="reasons" class="section" aria-label="Reasons section">
+        <div class="section-head">
+          <h2>50 Reasons</h2>
+          <p>Small reminders of why my heart chooses you.</p>
+        </div>
+        <ol id="reasonsList" class="reasons-list"></ol>
+      </section>
+
+      <section id="final" class="section final" aria-label="Final message section">
+        <div class="content-card final-card">
+          <h2>Always You</h2>
+          <p>
+            Thank you for being my soft place to land. No matter how the stars move,
+            I still move toward you.
+          </p>
+          <a class="soft-btn link-btn" href="#home" aria-label="Back to top">Back to top</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
