@@ -276,28 +276,74 @@ h1 {
   color: #f7ecff;
 }
 
-.card-grid {
+.universes-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-3);
+  align-items: start;
 }
 
-.universe-card {
+.universe-progress {
+  position: sticky;
+  top: 5.4rem;
+  z-index: 3;
+  margin: 0;
+  justify-self: center;
+  font-size: 0.73rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #fff8ff;
+  background: rgba(255, 243, 251, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  padding: 0.36rem 0.78rem;
+  backdrop-filter: blur(8px);
+}
+
+.universe-story {
+  width: min(100%, 800px);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.universe-story-card {
   background: rgba(255, 248, 254, 0.16);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-md);
-  padding: var(--space-3);
+  padding: var(--space-4);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 22px rgba(25, 11, 46, 0.2);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  will-change: opacity, transform;
 }
 
-.universe-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.35rem;
+.universe-story-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.universe-card p {
+.universe-story-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.6rem;
+}
+
+.universe-story-head h3 {
+  font-size: 1.55rem;
+}
+
+.universe-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.universe-story-card p {
   color: #fff4fb;
+  margin: 0;
 }
 
 .reasons-list {
@@ -368,10 +414,6 @@ h1 {
     padding-right: var(--space-5);
   }
 
-  .card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .reasons-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding-left: 1.4rem;
@@ -380,6 +422,20 @@ h1 {
   .hero-actions {
     flex-direction: row;
     justify-content: center;
+  }
+}
+
+@media (min-width: 960px) {
+  .universes-layout {
+    grid-template-columns: minmax(0, 800px) auto;
+    justify-content: center;
+    column-gap: var(--space-4);
+  }
+
+  .universe-progress {
+    justify-self: start;
+    margin-top: 1.2rem;
+    top: 7rem;
   }
 }
 
@@ -395,5 +451,11 @@ h1 {
 
   .petal {
     display: none;
+  }
+
+  .universe-story-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

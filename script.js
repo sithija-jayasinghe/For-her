@@ -7,28 +7,27 @@
 
 const universeMessages = [
   {
-    title: "Universe 01",
-    message: "Even in a city of endless lights, I still find home in your eyes.",
+    icon: "✨",
+    message:
+      "In a world full of noise… you were the calm I didn’t know I needed. Hi Upeksha… my soft little universe.",
   },
   {
-    title: "Universe 02",
-    message: "If time ran backward, I would still walk toward you first.",
+    icon: "🌸",
+    message:
+      "If love was a garden, you’d be the quiet flower that blooms slowly… beautiful without asking for attention.",
   },
   {
-    title: "Universe 03",
-    message: "Across quiet winters and soft summers, your laugh is still my season.",
+    icon: "🌙",
+    message: "In another universe, you’d still be the gentle melody I play on repeat in my heart.",
   },
   {
-    title: "Universe 04",
-    message: "If we met as strangers, I would fall in love with you all over again.",
+    icon: "🌼",
+    message: "When my days feel heavy, you feel like fresh air after rain… calm, warm, steady.",
   },
   {
-    title: "Universe 05",
-    message: "In every stormy sky, your voice is the warm light I search for.",
-  },
-  {
-    title: "Universe 06",
-    message: "No matter the path, my heart keeps choosing your direction.",
+    icon: "🌺",
+    message:
+      "And if the stars rewrote our story a thousand times… I would still look for the girl who loves flowers and listens to soft songs at night. I’d still choose you, baby doll.",
   },
 ];
 
@@ -41,19 +40,108 @@ const reasons50 = Array.from(
 const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function renderUniverseCards() {
-  const universeGrid = document.getElementById("universeGrid");
-  if (!universeGrid) return;
+  const universeStory = document.getElementById("universeStory");
+  if (!universeStory) return;
 
-  universeGrid.innerHTML = universeMessages
-    .map(
-      (item) => `
-        <article class="universe-card">
-          <h3>${item.title}</h3>
+  universeStory.innerHTML = universeMessages
+    .map((item, index) => {
+      const universeNumber = String(index + 1).padStart(2, "0");
+      return `
+        <article class="universe-story-card" data-index="${index}">
+          <div class="universe-story-head">
+            <span class="universe-icon" aria-hidden="true">${item.icon}</span>
+            <h3>Universe ${universeNumber}</h3>
+          </div>
           <p>${item.message}</p>
         </article>
-      `
-    )
+      `;
+    })
     .join("");
+}
+
+function setupUniverseStory() {
+  const cards = Array.from(document.querySelectorAll(".universe-story-card"));
+  const progressIndicator = document.getElementById("universeProgress");
+  if (!cards.length || !progressIndicator) return;
+
+  const totalCards = cards.length;
+  let activeIndex = 0;
+
+  const setActiveIndex = (nextIndex) => {
+    const safeIndex = Math.max(0, Math.min(totalCards - 1, nextIndex));
+    if (safeIndex === activeIndex) return;
+    activeIndex = safeIndex;
+    progressIndicator.textContent = `Universe ${activeIndex + 1}/${totalCards}`;
+  };
+
+  progressIndicator.textContent = `Universe 1/${totalCards}`;
+
+  if (reduceMotionQuery.matches) {
+    cards.forEach((card) => card.classList.add("is-visible"));
+  } else {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -12% 0px" }
+    );
+
+    cards.forEach((card) => revealObserver.observe(card));
+  }
+
+  const visibilityMap = new Map(cards.map((_, index) => [index, 0]));
+  const getClosestCardIndex = () => {
+    const viewportCenter = window.innerHeight / 2;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    cards.forEach((card, index) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.top + rect.height / 2;
+      const distance = Math.abs(cardCenter - viewportCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    return closestIndex;
+  };
+
+  const syncProgress = () => {
+    let bestIndex = -1;
+    let bestRatio = 0;
+
+    visibilityMap.forEach((ratio, index) => {
+      if (ratio > bestRatio) {
+        bestRatio = ratio;
+        bestIndex = index;
+      }
+    });
+
+    if (bestIndex === -1 || bestRatio === 0) {
+      bestIndex = getClosestCardIndex();
+    }
+
+    setActiveIndex(bestIndex);
+  };
+
+  const activeObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const index = Number(entry.target.dataset.index);
+        visibilityMap.set(index, entry.isIntersecting ? entry.intersectionRatio : 0);
+      });
+      syncProgress();
+    },
+    { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: "-18% 0px -34% 0px" }
+  );
+
+  cards.forEach((card) => activeObserver.observe(card));
 }
 
 function renderReasons() {
@@ -249,6 +337,7 @@ function setupStarfield() {
 
 document.addEventListener("DOMContentLoaded", () => {
   renderUniverseCards();
+  setupUniverseStory();
   renderReasons();
   setupSmoothScroll();
   setupAudioToggle();
