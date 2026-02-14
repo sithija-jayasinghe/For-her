@@ -72,25 +72,38 @@
           <p>Little worlds where we still find each other.</p>
         </div>
         <div class="universes-layout">
-          <p
-            id="universeProgress"
-            class="universe-progress"
-            role="status"
-            aria-live="polite"
-            aria-label="Universe reading progress"
-          >
-            Universe 1/5
-          </p>
+          <div class="universe-progress-wrap">
+            <p
+              id="universeProgress"
+              class="universe-progress"
+              role="status"
+              aria-live="polite"
+              aria-label="Universe reading progress"
+            >
+              Universe 1/5
+            </p>
+            <div id="universeProgressDots" class="universe-progress-dots" aria-hidden="true"></div>
+            <p class="universe-hint">Tap card to see the next universe</p>
+          </div>
           <div id="universeStory" class="universe-story" aria-label="Parallel universes story"></div>
         </div>
       </section>
 
       <section id="reasons" class="section" aria-label="Reasons section">
         <div class="section-head">
-          <h2>50 Reasons</h2>
-          <p>Small reminders of why my heart chooses you.</p>
+          <h2>50 Reasons I Love You</h2>
+          <p>Tap to reveal a reason 🌸</p>
         </div>
-        <ol id="reasonsList" class="reasons-list"></ol>
+        <p id="reasonsProgress" class="reasons-progress" role="status" aria-live="polite">
+          Revealed 0/50
+        </p>
+        <div id="reasonsStage" class="reasons-stage">
+          <div id="reasonsGrid" class="reasons-grid" aria-label="50 reasons cards"></div>
+          <canvas id="reasonsCelebration" class="reasons-celebration" aria-hidden="true"></canvas>
+          <p id="reasonsFinalMessage" class="reasons-final-message" role="status" aria-live="polite">
+            And I’d choose you again. 💖
+          </p>
+        </div>
       </section>
 
       <section id="final" class="section final" aria-label="Final message section">
