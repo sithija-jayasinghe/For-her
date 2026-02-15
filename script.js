@@ -748,6 +748,7 @@ function setupTimer() {
   updateTimer();
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
   setupLoadingScreen();
   renderUniverseCards();
